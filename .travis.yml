@@ -1,10 +1,10 @@
 language: node_js
 node_js: node
 services: mongodb
-# deploy:
-#     provider: heroku
-#     api_key:
-#       secure: [YOUR-API-KEY]
-#     app: [YOUR-APP-NAME]
-#     on:
-#       repo: [YOUR-APP-REPO]
+deploy:
+  provider: heroku
+  api_key:
+    secure: ed0ace1f-4794-4a69-b971-9bae5c2942c0
+  app: Megan-noteful-v3a
+  on:
+    repo: thinkful-ei19/Megan-noteful-v3a
