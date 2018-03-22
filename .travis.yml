@@ -5,6 +5,6 @@ deploy:
   provider: heroku
   api_key:
     secure: 6af5cdd9-3b54-4561-af4a-cccc0cf26708
-  app: Megan-noteful-v3a
+  app: megan-noteful-v3a
   on:
     repo: thinkful-ei19/Megan-noteful-v3a
