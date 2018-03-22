@@ -41,6 +41,7 @@ router.get('/notes/:id', (req, res, next) => {
 
   Note.findById(id)
     .then(result => {
+      console.log('findById:', id, result);
       if (result) {
         res.json(result);
       } else {
@@ -48,6 +49,7 @@ router.get('/notes/:id', (req, res, next) => {
       }
     })
     .catch(err => {
+      console.error(err);
       next(err);
     });
 });
