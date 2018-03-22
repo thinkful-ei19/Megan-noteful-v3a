@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 
 const Note = require('../models/note');
 
+
 /* ========== GET/READ ALL ITEMS ========== */
 router.get('/notes', (req, res, next) => {
   const { searchTerm } = req.query;
