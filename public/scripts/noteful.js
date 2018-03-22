@@ -217,7 +217,7 @@ const noteful = (function () {
         store.currentNote = {};
       }
 
-      console.log('Get notes by folderId, coming soon...');
+      
       api.search('/api/notes', store.currentQuery)
         .then(response => {
           store.notes = response;
