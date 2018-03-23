@@ -10,7 +10,7 @@ const Note = require('../models/note');
 
 /* ========== GET/READ ALL ITEMS ========== */
 router.get('/notes', (req, res, next) => {
-  const { searchTerm, folderId } = req.query;
+  const { searchTerm, folderId, tags } = req.query;
 
   let filter = {};
 
@@ -23,8 +23,13 @@ router.get('/notes', (req, res, next) => {
     filter.folderId = folderId;
   }
 
+  if(tags){
+    filter.tags = tags;
+  }
+
   Note.find(filter)
     .sort('created')
+    .populate({path: 'tags', select: 'name'})
     .then(results => {
       res.json(results);
     })
@@ -44,6 +49,7 @@ router.get('/notes/:id', (req, res, next) => {
   }
 
   Note.findById(id)
+    .populate({path: 'tags', select: 'name'})
     .then(result => {
       console.log('findById:', id, result);
       if (result) {
@@ -60,7 +66,7 @@ router.get('/notes/:id', (req, res, next) => {
 
 /* ========== POST/CREATE AN ITEM ========== */
 router.post('/notes', (req, res, next) => {
-  const { title, content, folderId } = req.body;
+  const { title, content, folderId, tags } = req.body;
 
   /***** Never trust users - validate input *****/
   if (!title) {
@@ -69,7 +75,19 @@ router.post('/notes', (req, res, next) => {
     return next(err);
   }
 
-  const newItem = { title, content, folderId };
+  if(tags){
+    tags.forEach(tag=>{
+      console.log(tag);
+      if(!mongoose.Types.ObjectId.isValid(tag)){
+        console.log(tag);
+        const err = new Error ('Invalid Tag');
+        err.status = 400;
+        return next(err);
+      }
+    });
+  }
+
+  const newItem = { title, content, folderId, tags };
 
   Note.create(newItem)
     .then(result => {
@@ -83,7 +101,7 @@ router.post('/notes', (req, res, next) => {
 /* ========== PUT/UPDATE A SINGLE ITEM ========== */
 router.put('/notes/:id', (req, res, next) => {
   const { id } = req.params;
-  const { title, content, folderId } = req.body;
+  const { title, content, folderId, tags } = req.body;
 
   /***** Never trust users - validate input *****/
   if (!title) {
@@ -98,7 +116,19 @@ router.put('/notes/:id', (req, res, next) => {
     return next(err);
   }
 
-  const updateItem = { title, content, folderId };
+  if(tags){
+    tags.forEach(tag=>{
+      console.log(tag);
+      if(!mongoose.Types.ObjectId.isValid(tag)){
+        console.log(tag);
+        const err = new Error ('Invalid Tag');
+        err.status = 400;
+        return next(err);
+      }
+    });
+  }
+
+  const updateItem = { title, content, folderId, tags };
   const options = { new: true };
 
   Note.findByIdAndUpdate(id, updateItem, options)
