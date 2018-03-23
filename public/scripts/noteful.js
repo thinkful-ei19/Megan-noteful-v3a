@@ -64,7 +64,7 @@ const noteful = (function () {
 
   function generateFolderSelect(list) {
     const notes = list.map(item => `<option value="${item.id}">${item.name}</option>`);
-    return '<option value="">Select Folder:</option>' + notes.join('');
+    return '<option value="" disabled>Select Folder:</option>' + notes.join('');
   }
 
   function generateTagsList(list, currQuery) {

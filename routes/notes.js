@@ -10,8 +10,7 @@ const Note = require('../models/note');
 
 /* ========== GET/READ ALL ITEMS ========== */
 router.get('/notes', (req, res, next) => {
-  const { searchTerm, folderId, tags } = req.query;
-
+  const { searchTerm, folderId, tagId } = req.query;
   let filter = {};
 
   if (searchTerm) {
@@ -23,10 +22,10 @@ router.get('/notes', (req, res, next) => {
     filter.folderId = folderId;
   }
 
-  if(tags){
-    filter.tags = tags;
+  if(tagId){
+    filter.tags = tagId;
   }
-
+  console.log(filter);
   Note.find(filter)
     .sort('created')
     .populate({path: 'tags', select: 'name'})
@@ -94,6 +93,7 @@ router.post('/notes', (req, res, next) => {
       res.location(`${req.originalUrl}/${result.id}`).status(201).json(result);
     })
     .catch(err => {
+      console.log(err);
       next(err);
     });
 });
